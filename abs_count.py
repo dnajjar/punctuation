@@ -1,4 +1,3 @@
-#First sentence to drawing of a hat
 #sources:
 #English: https://almabooks.com/wp-content/uploads/2016/10/Little-Prince-final-text.pdf
 #French: https://gutenberg.net.au/ebooks03/0300771h.html?fbclid=IwAR2x-93AH_qrAA_ZMBH9ilAZEpSYQ-FzeJphnkrTWf862wvNMuTRChrXUA0
@@ -10,6 +9,7 @@ import re
 PUNCTUATION = "…" + string.punctuation + '“' + "'" + '‘' + '—' + '’'+ "'" + "«"+ "»" + "¡" + "¿"+"''"
 PUNC_EXCLUSION_LIST = ['\n', "«", "»", '"', '“', '”'] 
 
+#Graf 1: First sentence to drawing of a hat
 petit_prince_para_1 = {
 'English':"""Once, when I was six years old, I saw a marvellous picture in a
 book on rainforests called Real-Life Stories. It depicted a boa
@@ -56,11 +56,13 @@ book on rainforests called Real-Life Stories. It depicted a boa
 def pad_text(text): 
   #adds spaces around each punctuation mark so that we can later split on them
   #see test_pad_text for example
-  #TO DO: WHAT IF ELLIPSES ARE ... not …???
   punctuation = PUNCTUATION
+  text = re.sub('\.\.\.','…',text) #takes care of cases where ellipses are ... not … so that they aren't treated as 3 separate dots
   return text.translate(str.maketrans({key: " {0} ".format(key) for key in punctuation}))
 
 def get_punctuation_counts(text):
+  #returns a dictionary of unique punctuation marks with their counts
+  #see test_get_punctuation_counts()
   split_text = text.split(" ")
   count_dict = {}
   for word_or_punc in split_text:
@@ -86,6 +88,12 @@ def test_pad_text():
   expected_padding = "Grown - ups never understand anything on their own ,  and it ’ s tiring ,  for children ,  to be for ever and ever explaining … "
   print(actual_padding == expected_padding)
 
+def test_pad_text_with_ellipses():
+  test_string = "Grown-ups never understand anything on their own, and it’s tiring, for children, to be for ever and ever explaining..."
+  actual_padding = pad_text(test_string)
+  expected_padding = "Grown - ups never understand anything on their own ,  and it ’ s tiring ,  for children ,  to be for ever and ever explaining … "
+  print(actual_padding == expected_padding)
+
 def test_get_punctuation_counts():
   test_padded_string = "Grown - ups never understand anything on their own ,  and it ’ s tiring ,  for children ,  to be for ever and ever explaining … "
   actual_count_dict = get_punctuation_counts(test_padded_string)
@@ -93,4 +101,5 @@ def test_get_punctuation_counts():
   print(actual_count_dict == expected_count_dict)
 
 test_pad_text()
+test_pad_text_with_ellipses()
 test_get_punctuation_counts()
