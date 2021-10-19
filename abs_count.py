@@ -145,6 +145,12 @@ for language, text in petit_prince_full_text.items():
       counts = get_punctuation_counts(padded_text)
       print(language, counts)
 
+      first_chapter = text[0:3500]
+      padded_text = pad_text(first_chapter)
+      counts = get_punctuation_counts(padded_text)
+      print(language, counts)
+ 
+
 #############################TESTS########################################
 def test_pad_text():
   test_string = "Grown-ups never understand anything on their own, and it’s tiring, for children, to be for ever and ever explaining…"
@@ -163,7 +169,6 @@ def test_get_punctuation_counts():
   actual_count_dict = get_punctuation_counts(test_padded_string)
   expected_count_dict = {'-': 1, ',': 3, '’': 1, "…": 1}
   print(actual_count_dict == expected_count_dict)
-
 
 def test_get_punctuation_counts_1():
   test_string = "– Qui êtes-vous… qui êtes-vous… qui êtes-vous… répondit l’écho. "
